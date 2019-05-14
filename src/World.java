@@ -1,3 +1,7 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
+
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -19,11 +23,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
+/**
+ * The World is where the calls to generate a map and add tiles to the UI occurs.
+ */
 public class World {
 	private ContentPaneHandler cph;
 	private Player pl;
 	
-	public static final int ROW = 10, COL = 10;
+	public static final int ROW = 20, COL = 20;
 	
 	//if you change from 256, you gotta enable scaling
 	public static final int W = 256, H = 256;//512/4; 
@@ -34,6 +41,10 @@ public class World {
 	private static Queue<Bullet> queueBullets;
 	public static Coordinate[][] cmap;
 	
+	/**
+	 * Constructs a World
+	 * @param cph content-pane handler
+	 */ 
 	public World(ContentPaneHandler cph) {
 		this.cph = cph;
 		this.soldiers = new ArrayList<>();
@@ -44,6 +55,7 @@ public class World {
 		for (int i = 0; i < cmap.length; i++) for(int j = 0;j< cmap[i].length; j++) cmap[i][j] = new Coordinate(i , j);
 
 		pl = new Player(cph, new Coordinate(2, 2));
+		soldiers.add(pl);
 		
 		generate();
 	//	uiAllTiles();
@@ -66,9 +78,12 @@ public class World {
 		
 	}
 	
+	/**
+	 * Generates a map
+	 */
 	public void generate() {
 		//recursive space partitioning
-		PartitionGenerator pag = new PartitionGenerator(ROW, COL);
+		PartitionGenerator pag = new PartitionGenerator(ROW, COL, Setup.experimental);
 		int[][] map = pag.generate();
 		
 		PartitionGenerator.print(map);
@@ -76,8 +91,8 @@ public class World {
 		cph.setPartitionGenerator(pag);
 		cph.setPlayer(pl);
 
-		for (int k = 0; k < 5; k ++) {
-			soldiers.add(new Enemy(cph, new Coordinate(Math.random() * World.COL, Math.random() * World.ROW)));
+		for (int k = 0; k < Setup.players; k ++) {
+			soldiers.add(new Enemy(cph, new Coordinate(1 + (Math.random()*(World.COL-1)), 1 + (Math.random()*(World.ROW-1)))));
 		}
 		
 //		for (int i = 0; i < 3; i++) {
@@ -124,6 +139,10 @@ public class World {
 		Launcher.getLoadingFrame().dispose();
 	}
 	
+	/**
+	 * Adds tiles to the user interface 
+	 * @param c the tiles to place on the screen
+	 */
 	private void uiTiles(Tile... c) {
 		for (Tile v : c) {
 			try {
@@ -150,7 +169,6 @@ public class World {
 	
 	/**
 	 * Places all tiles on the user interface. 
-	 * @param t tile
 	 */
 	private void uiAllTiles() {
 		for (HashSet<Tile> c : tiles.values()) {
@@ -183,10 +201,21 @@ public class World {
 //				WindowEvent.WINDOW_CLOSING));
 	}
 	
+	/**
+	 * returns the player
+	 * @return the player
+	 */
 	public Player getPlayer() {
 		return pl;
 	}
 	
+	/**
+	 * Crops a buffered image
+	 * @param f the buffered image
+	 * @param crop rectangular region
+	 * @return an Image, cropped.
+	 * @throws IOException if it couldn't be read
+	 */
 	public static Image cropImage(BufferedImage f, Rectangle crop) throws IOException {
 		BufferedImage ret = new BufferedImage((int)crop.getWidth(), (int)crop.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
 		ret.getGraphics().drawImage(f, 
@@ -200,11 +229,22 @@ public class World {
 		return ret;
 	}
 	
+	/**
+	 * @param src
+	 * @param rect
+	 * @return
+	 */
 	public static BufferedImage cropToBufferedImage(BufferedImage src, Rectangle rect) {
 		BufferedImage ret = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		return ret; 
 	}
 	
+	/**
+	 * Crops an image icon
+	 * @param icon the image icon
+	 * @param crop rectangular region
+	 * @return an Image, cropped
+	 */
 	public static Image cropImgIcon(ImageIcon icon, Rectangle crop) {
 		Image image = icon.getImage();
 		
@@ -220,19 +260,24 @@ public class World {
 		return ret;
 	}
 	
-	private boolean replaceTile(Tile t) {
-		return true;
-	}
-
+	/**
+	 * returns a HashMap of tiles
+	 * @return the hash map of tiles
+	 */
 	public static HashMap<Coordinate, HashSet<Tile>> getTiles() {
 		return tiles;
 	}
 	
+	/**
+	 * returns the list of soldiers, including Player
+	 * @return the list of soldiers, including Player
+	 */
 	public static ArrayList<Soldier> getSoldiers() {
 		return soldiers;
 	}
 
 	/**
+	 * returns the queue of bullets
 	 * @return the queueBullets
 	 */
 	public static Queue<Bullet> getQueueBullets() {
@@ -240,6 +285,7 @@ public class World {
 	}
 
 	/**
+	 * Sets the queue of bullets
 	 * @param queueBullets the queueBullets to set
 	 */
 	public void setQueueBullets(Queue<Bullet> queueBullets) {

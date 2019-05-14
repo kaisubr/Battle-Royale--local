@@ -1,7 +1,14 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
+
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
+/**
+ * Player and Enemy are both Soldiers, a type of GameEntity in the World. 
+ */
 public abstract class Soldier extends GameEntity {
 	
 	protected int id;
@@ -11,6 +18,7 @@ public abstract class Soldier extends GameEntity {
 	protected ContentPaneHandler cph;
 	protected boolean isAnimating;
 	protected boolean alive;
+	public int eliminations;
 	
 	/**
 	 * Construct a soldier on the panel at the location posX, posY.
@@ -23,7 +31,7 @@ public abstract class Soldier extends GameEntity {
 		id = total++;
 
 		this.cph = cph;
-		this.c = c;
+		this.c = c; 
 		hp = 100;
 		alive = true;
 		isAnimating = false;
@@ -66,8 +74,19 @@ public abstract class Soldier extends GameEntity {
 	 */
 	public abstract JLabel getImg();
 
+	/**
+	 * Affects the total health.
+	 * @param i change in health.
+	 */
 	public void deltaHp(int i) {
 		hp += i;
+	}
+
+	/**
+	 * Increments elimination count.
+	 */
+	public void eliminationIncr() {
+		eliminations ++;
 	}
 
 }

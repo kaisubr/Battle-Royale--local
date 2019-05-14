@@ -1,4 +1,10 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
 
+/**
+ * A SimpleCoordinate exists in a 2D space, unlike a regular Coordinate that exists in a 3D (isometric) space
+ */
 public class SimpleCoordinate {
 	private int x, y;
 	private SimpleCoordinate from;
@@ -12,16 +18,32 @@ public class SimpleCoordinate {
 		y = (j);
 	}
 	
+	/**
+	 * Constructs SimpleCoordinate from Coordinate
+	 * @param c a Coordinate version
+	 */
 	public SimpleCoordinate (Coordinate c) {
 		x = (int) c.getIsoX();
 		y = (int) c.getIsoY();
 	}
 	
+	/**
+	 * Consructs simple coordinate at (i, j)
+	 * @param i the x coord. 
+	 * @param j the y coord.
+	 * @param previous the previous/parent coordinate
+	 */
 	public SimpleCoordinate(int i, int j, SimpleCoordinate previous) {
 		x = (i);
 		y = (j);
 		from = previous;
 	}
+	
+	/**
+	 * Constructs SimpleCoordinate from Coordinate
+	 * @param c the Coordinate
+	 * @param previous the previous/parent coordinate
+	 */
 	public SimpleCoordinate(Coordinate c, SimpleCoordinate previous) {
 		x = (int) c.getIsoX();
 		y = (int) c.getIsoY();
@@ -43,6 +65,9 @@ public class SimpleCoordinate {
 
 	/**
 	 * @return the x
+	 */
+	/**
+	 * @return
 	 */
 	public int getX() {
 		return x;

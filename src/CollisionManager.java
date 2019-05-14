@@ -1,3 +1,6 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
@@ -6,22 +9,21 @@ import java.util.HashSet;
 
 import javax.swing.JLabel;
 
+/**
+ * Utility class to handle collision detections
+ */
 public class CollisionManager {
 	
-	public CollisionManager() {
-		
-	}
-	
 	/**
-	 * Perform a collision detection using bsp tree 
-	 * @param a
-	 * @param ac 
-	 * @param b
-	 * @param bc 
-	 * @param world
-	 * @param partitionTree
-	 * @return
-	 */
+	 * Perform a collision detection using a partition ree 
+	 * @param a the game object
+	 * @param ac the game object's coordinate
+	 * @param b the other game object
+	 * @param bc the other object's coordinate
+	 * @param world to check global collision, or partitional collision
+	 * @param partitionTree the tree of partitions
+	 * @return if collision
+	 */ 
 	public static boolean isCollision(GameEntity a, Coordinate ac, GameEntity b, Coordinate bc, 
 			Orientation direction, boolean world, PartitionGenerator pag) {
 		
@@ -42,19 +44,19 @@ public class CollisionManager {
 			}
 			
 			//check against all walls in this partition for collision
-			System.out.println((int)isoX + ", " + (int)isoY + " = " + pag.getMap()[(int)isoX][(int)isoY]);
+			//System.out.println((int)isoX + ", " + (int)isoY + " = " + pag.getMap()[(int)isoX][(int)isoY]);
 			int wall = pag.getMap()[(int)isoX][(int)isoY];
 			
 			if (wall > 0) {
 				if (wall == PartitionGenerator.WALL_N) {
-					System.out.println("North wall, orientation " + direction);
+				//	//System.out.println("North wall, orientation " + direction);
 					if (direction == Orientation.NORTH || direction == Orientation.NORTHEAST || direction == Orientation.EAST) {
-						System.out.println("cant move " + direction);
+					//	//System.out.println("cant move " + direction);
 						return true;
 					}
 				} else if (wall == PartitionGenerator.WALL_E) {
 					if (direction == Orientation.SOUTHEAST || direction == Orientation.SOUTH || direction == Orientation.EAST || direction == Orientation.SOUTHEAST) {
-						System.out.println("cant move " + direction);
+					//	//System.out.println("cant move " + direction);
 						return true;
 					}
 				}
@@ -62,9 +64,9 @@ public class CollisionManager {
 			
 //			
 //			if (wall == PartitionGenerator.WALL_N) {
-//				System.out.println("North wall, orientation " + direction);
+//				//System.out.println("North wall, orientation " + direction);
 //				if (direction == Orientation.NORTH || direction == Orientation.NORTHEAST || direction == Orientation.EAST) {
-//					System.out.println("cant move " + direction);
+//					//System.out.println("cant move " + direction);
 //					return true;
 //				} else {
 //					
@@ -75,6 +77,13 @@ public class CollisionManager {
 		}
 	}
 	
+	/**
+	 * Checks if walkable along given direction
+	 * @param oldC the old coordinate
+	 * @param dir the direction
+	 * @param pag the partition-generator
+	 * @return if walkable
+	 */
 	public static boolean walkableTo(Coordinate oldC, Orientation dir, PartitionGenerator pag) {
 		int isoX = (int)Math.max(oldC.getIsoX(), 0);
 		int isoY = (int)Math.max(oldC.getIsoY(), 0);
@@ -104,17 +113,23 @@ public class CollisionManager {
 		
 		int wall = pag.getMap()[isoX][isoY];
 		
-		System.out.println("going to " + isoX + ", " + isoY + "; walkable " + wall);
+		//System.out.println("going to " + isoX + ", " + isoY + "; walkable " + wall);
 		return (wall == 0);
 		
 	}
 	
+	/**
+	 * Checks if walkable at a given point
+	 * @param c coordinate
+	 * @param pag the partition-generator
+	 * @return if walkable
+	 */
 	public static boolean walkableHere(Coordinate c, PartitionGenerator pag) {
 		int isoX = (int)Math.max(c.getIsoX(), 0);
 		int isoY = (int)Math.max(c.getIsoY(), 0);
 		
 		int wall = pag.getMap()[isoX][isoY];
-		System.out.println("at " + isoX + ", " + isoY + "; walkable " + wall);
+		//System.out.println("at " + isoX + ", " + isoY + "; walkable " + wall);
 		return (wall == 0);
 	}
 
@@ -122,9 +137,10 @@ public class CollisionManager {
 	 * If the player continues in their orientation from the coordinate, would they hit either an
 	 * un-walkable tile or cross a tile border at which a wall is occupied? A tile occupied by a wall
 	 * is considered walkable until they might pass the certain border.
-	 * @param oldC
-	 * @param orientation
-	 * @param pag
+	 * Deprecated - replaced by isWalkableBasic(...)
+	 * @param oldC old coordinate
+	 * @param orientation the orientation
+	 * @param pag the partition-generator
 	 * @return if the player should be able to move
 	 */
 	@Deprecated
@@ -156,6 +172,13 @@ public class CollisionManager {
 		}
 	}
 	
+	/**
+	 * Checks bounds based on wall line segments
+	 * @param thisBounds the game object's bounds
+	 * @param oldC the old coordinate
+	 * @param pag the partition-generator
+	 * @return if walkable 
+	 */
 	public static boolean isWalkableBasic(Rectangle thisBounds, Coordinate oldC, PartitionGenerator pag) {
 		int isoX = (int)Math.max(oldC.getIsoX(), 0);
 		int isoY = (int)Math.max(oldC.getIsoY(), 0);
@@ -194,10 +217,10 @@ public class CollisionManager {
 	}
 	
 	/**
-	 * This method does not check for walkable tiles.
-	 * @param thisBounds
-	 * @param oldC
-	 * @param pag
+	 * This method does not check for walkable tiles. Checks a basic collision with any soldier.
+	 * @param thisBounds the game object's bounds
+	 * @param oldC the old coordinate
+	 * @param pag the partition-generator
 	 * @return null if no Soldier hit. A Soldier if a soldier is hit.
 	 */
 	public static Soldier isSoldierHitBasic(Rectangle thisBounds, Coordinate oldC, ArrayList<Soldier> sol) {

@@ -1,3 +1,6 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -10,6 +13,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
+/**
+ * Represents a fireball
+ */
 public class Bullet {
 	private Coordinate from, to;
 	private double speed, angle; //angle is radians
@@ -23,8 +29,17 @@ public class Bullet {
 	private boolean isMoving;
 	private boolean alreadyRemoved;
 	
+	/**
+	 * Constructs a bullet
+	 * @param cph the content-pane handler
+	 * @param from the coordinate (point on screen)
+	 * @param to the other coordinate (point on screen)
+	 * @param actualPlayer actual player's relative coordinates to the content-pane
+	 * @param firedFrom the soldier from which the bullet was fired from
+	 * @param expectedDamage the damage done by the bullet
+	 */
 	public Bullet(ContentPaneHandler cph, Coordinate from, Coordinate to, Coordinate actualPlayer, Soldier firedFrom, int expectedDamage) {
-		double toY = to.getCartY();
+		double toY = to.getCartY(); 
 		double fromY = from.getCartY();
 		double toX = to.getCartX();
 		double fromX = from.getCartX();
@@ -34,11 +49,11 @@ public class Bullet {
 		else angle = 2 * Math.PI - angle;
 		angle = 360 - Math.toDegrees(angle);
 		
-		System.out.println("from " + fromX + ", " + fromY + " and to " + toX + ", " + toY);
-		System.out.println(angle);
+		//System.out.println("from " + fromX + ", " + fromY + " and to " + toX + ", " + toY);
+		//System.out.println(angle);
 		
 		
-		speed = 10;
+		speed = 15;
 		cartX = actualPlayer.getCartX();
 		cartY = actualPlayer.getCartY();
 		this.cph = cph;
@@ -49,6 +64,9 @@ public class Bullet {
 		draw();
 	}
 	
+	/**
+	 * Draws the bullet
+	 */
 	public void draw() {
 		// TODO Auto-generated method stub
 		try {
@@ -62,10 +80,10 @@ public class Bullet {
 			ImageIcon i = new ImageIcon(ImageIO.read(fsr));//f.toString());
 			
 			img = new JLabel(i);
-			img.setBorder(new LineBorder(Color.RED));
+			//img.setBorder(new LineBorder(Color.RED));
 			cph.add(img, 
-					48,//12,
-					48,//12,
+					12,
+					12,
 					cartX, 
 					cartY, 
 					false,
@@ -75,6 +93,9 @@ public class Bullet {
 		}
 	}
 
+	/**
+	 * Moves the bullet
+	 */
 	public void forceStepMove() {
 		// TODO Auto-generated method stub
 		if (isMoving) {
@@ -83,8 +104,9 @@ public class Bullet {
 			
 			if (CollisionManager.isWalkableBasic(img.getBounds(), Coordinate.fromCart(cartX, cartY), cph.getPartitionGenerator())) {
 				Soldier collidedWith = CollisionManager.isSoldierHitBasic(img.getBounds(), Coordinate.fromCart(cartX, cartY), World.getSoldiers());
-				if (collidedWith != null) {
+				if (collidedWith != null && collidedWith != firedFrom) {
 					collidedWith.deltaHp(-expectedDamage);
+					if (!collidedWith.alive) firedFrom.eliminationIncr();
 					stopMove();
 				} else {
 					img.setLocation((int)cartX, (int)cartY);
@@ -100,9 +122,12 @@ public class Bullet {
 		}
 	}
 
+	/**
+	 * Stops bullet movement
+	 */
 	private void stopMove() {
 		// TODO Auto-generated method stub
-		System.out.println("stopped");
+		//System.out.println("stopped");
 		isMoving = false;
 
 		cph.remove(img);

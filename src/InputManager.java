@@ -1,9 +1,15 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
+/**
+ * Detects input via mouse or keyboard
+ */
 public class InputManager implements KeyListener, MouseListener {
 	private Camera cam;
 
@@ -11,6 +17,10 @@ public class InputManager implements KeyListener, MouseListener {
 	boolean ctdMove;
 	private ContentPaneHandler cph;
 	
+	/**
+	 * Constructs an input manager
+	 * @param cam the camera
+	 */
 	public InputManager(Camera cam) {
 		this.cam = cam;
 
@@ -22,6 +32,10 @@ public class InputManager implements KeyListener, MouseListener {
 		cph = cam.getContentPaneHandler();
 	}
 	
+	/**
+	 * notified when key pressed
+	 * @param v the key event  
+	 */
 	@Override
 	public void keyPressed(KeyEvent v) {
 		// TODO Auto-generated method stub
@@ -37,6 +51,9 @@ public class InputManager implements KeyListener, MouseListener {
 		}
 	}
 
+	/**
+	 *  Sets player position
+	 */
 	public void setPosition() {
 		// TODO Auto-generated method stub
 		if (cph.getPlayer() != null) {
@@ -92,6 +109,10 @@ public class InputManager implements KeyListener, MouseListener {
 //		  move[3] = false;
 //	}
 
+	/**
+	 * Notified when key released. Updates key array.
+	 * @param v the key-event
+	 */
 	@Override
 	public void keyReleased(KeyEvent v) {
 		if (v.getKeyCode() < move.length) {
@@ -99,6 +120,10 @@ public class InputManager implements KeyListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Unimplemented
+	 * @param v the key-event
+	 */
 	@Override
 	public void keyTyped(KeyEvent v) {
 
@@ -112,32 +137,52 @@ public class InputManager implements KeyListener, MouseListener {
 //		move();
 	}
 
+	/**
+	 * Returns array of keys
+	 * @return the array of keys
+	 */
 	public boolean[] getKeys() {
 		// TODO Auto-generated method stub	
 		return move;
 	}
 
+	/**
+	 * Unimplemented
+	 * @param e the mouse-event
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * Unimplemented
+	 * @param e the mouse-event
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Unimplemented
+	 * @param e the mouse-event
+	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Fires a fireball
+	 * @param e the mouse-event
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("click");
+		//System.out.println("click");
 
 		Coordinate tlactPl = cph.getPlayer().c;
 		Coordinate centrPl = Coordinate.fromCart(tlactPl.getCartX() + cph.getPlayer().getImg().getWidth()/2, tlactPl.getCartY() + cph.getPlayer().getImg().getHeight()/2);
@@ -153,6 +198,10 @@ public class InputManager implements KeyListener, MouseListener {
 				));
 	}
 
+	/**
+	 * Unimplemented
+	 * @param e the mouse-event
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub

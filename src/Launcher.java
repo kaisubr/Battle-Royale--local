@@ -1,7 +1,13 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * The Launcher is the runner class for the game.
+ */
 public class Launcher {
 	
 	public static final Dimension SCREEN_SIZE = 
@@ -13,18 +19,28 @@ public class Launcher {
 	private static InputManager manager;
 	public static final int GAME_WIDTH = SCREEN_SIZE.width, GAME_HEIGHT = SCREEN_SIZE.height- 70;
 
+	/**
+	 * Constructs the runner, sets up the game.
+	 * @param args the cmd-line arguments
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Setup set = new Setup();
 		
 	}
 	
+	/**
+	 * Receives hint to initialize the game 
+	 */
 	public static void hintInitialize() {
 		javax.swing.SwingUtilities.invokeLater(() -> {
 			launch();
 		});
 	}
 
+	/**
+	 * Launches the game.
+	 */
 	private static void launch() {
 		// TODO Auto-generated method stub
 
@@ -62,10 +78,18 @@ public class Launcher {
 		cph.startGameLoop();
 	}
 	
+	/**
+	 * return the content-pane handler
+	 * @return the content-pane handler
+	 */
 	public ContentPaneHandler getCPH() {
 		return cph;
 	}
 	
+	/**
+	 * return the loading-assets JFrame
+	 * @return the loading-assets JFrame
+	 */
 	public static JFrame getLoadingFrame() {
 		return fr;
 	}

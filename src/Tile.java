@@ -1,3 +1,7 @@
+/**
+ *Kailash Subramanian, Gallatin
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,7 +28,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-
+/**
+ * A Tile has a file name and a coordinate on the map
+ */
 public class Tile {
 	
 	private File fn;
@@ -37,14 +43,20 @@ public class Tile {
 	private BufferedReader bfr;
 	private String name;
 	
+	/**
+	 * Constructs Tile from file and coordinate
+	 * @param name file name
+	 * @param where coordinate
+	 * @throws URISyntaxException if file not read
+	 */
 	public Tile(String name, Coordinate where) throws URISyntaxException {
 		
 		
 		//URL imgURL = /*Tile.class*/ getClass().getResource("/assets/tile/" + name + ".png");
 		//fn = new File(imgURL.getFile().replaceAll("%20", " "));//
 //		fn = new File(imgURL.toURI().toString());
-//		System.out.println(fn.toString());
-//		
+//		//System.out.println(fn.toString());
+//		 
 		this.name = name;
 		this.fsr = Tile.class.getResourceAsStream("/assets/tile/" + name + ".png");
 		//setBfr(new BufferedReader(new InputStreamReader(fsr)));
@@ -53,7 +65,7 @@ public class Tile {
 		//rsrc = new ImageIcon(cl.getResource("/assets/tile/" + name + ".png"));
 		
 		//fn = new File("src/assets/tile/" + name + ".png");
-		//System.out.println(fn.getAbsolutePath());
+		////System.out.println(fn.getAbsolutePath());
 
 		c = where;
 		
@@ -86,6 +98,13 @@ public class Tile {
 //				);
 	}
 	
+	/**
+	 * Constructs tile from file and coordiante
+	 * Deprecated - Coordinates may hold more than 1 tile (i.e. walls)
+	 * @param type file name
+	 * @param where coordinate
+	 * @param replaceIfExists to replace if a tile exists at a certain coordiante
+	 */
 	@Deprecated
 	public Tile(String type, Coordinate where, boolean replaceIfExists) {
 		
@@ -107,96 +126,80 @@ public class Tile {
 			throw new IllegalArgumentException("Tile occupied at " + where.getIsoX() + ", " + where.getIsoY());	
 	}
 	
+	/**
+	 * Returns a wall-line segment
+	 * @return the Line2D version of segment
+	 * @throws NullPointerException if the wall doesn't exist.
+	 */
 	public Line2D getWallLineSegment() throws NullPointerException {
 
-		System.out.println(c + "news:"+ n + "" + e +"" + w + "" +s);
+		////System.out.println(c + "news:"+ n + "" + e +"" + w + "" +s);
 		return ln;
 	}
 	
+	/**
+	 * return the File
+	 * @return the File 
+	 */
 	public File getFn() {
 		return fn;
 	}
 
+	/**
+	 * return hte input stream
+	 * @return hte input stream
+	 */
 	public InputStream getFsr() {
 		return  Tile.class.getResourceAsStream("/assets/tile/" + name + ".png");
 	}
 	
+	/**
+	 * return the image icon
+	 * @return the image icon
+	 */
 	public ImageIcon getImgIcon() {
 		return rsrc;
 	}
 
+	/**
+	 * return the coordinate
+	 * @return the coordinate
+	 */
 	public Coordinate getC() {
 		return c;
 	}
 
+	/**
+	 * return if it's a wall
+	 * @return if it's a wall
+	 */
 	public boolean isWall() {
 		return isWall;
 	}
 
+	/**
+	 * Sets if it's a wall
+	 * @param isWall is it a wall?
+	 */
 	public void setWall(boolean isWall) {
 		this.isWall = isWall;
 	}
 
 	/**
-	 * @return the bfr
+	 * Returns the BufferedReader
+	 * @return the buffered reader
 	 */
 	public BufferedReader getBfr() {
 		return bfr;
 	}
 
 	/**
+	 * Sets a BufferedReader
 	 * @param bfr the bfr to set
 	 */
 	public void setBfr(BufferedReader bfr) {
 		this.bfr = bfr;
 	}
-
-}
-
-class LinesComponent extends JComponent{
-
-	private static class Line{
-	    final int x1; 
-	    final int y1;
-	    final int x2;
-	    final int y2;   
-	    final java.awt.Color color;
-	
-	    public Line(int x1, int y1, int x2, int y2, java.awt.Color color) {
-	        this.x1 = x1;
-	        this.y1 = y1;
-	        this.x2 = x2;
-	        this.y2 = y2;
-	        this.color = color;
-	    }               
-	}
-	
-	private final LinkedList<Line> lines = new LinkedList<Line>();
-	
-	public void addLine(int x1, int x2, int x3, int x4) {
-	    addLine(x1, x2, x3, x4, Color.BLACK);
-	}
-	
-	public void addLine(int x1, int x2, int x3, int x4, Color color) {
-	    lines.add(new Line(x1,x2,x3,x4, color));        
-	    repaint();
-	}
-	
-	public void clearLines() {
-	    lines.clear();
-	    repaint();
-	}
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-	    for (Line line : lines) {
-	        g.setColor(line.color);
-	        g.drawLine(line.x1, line.y1, line.x2, line.y2);
-	        System.out.println("drawn line");
-	    }
-	}
-
 
 }
 
