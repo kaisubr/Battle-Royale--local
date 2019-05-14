@@ -1,0 +1,12 @@
+WARNING - 19:57:23: First conversion pass
+ERROR - 19:57:26: BSPTreeNode cannot be found by org.eclipse.umlgen.reverse.java_1.0.0.201511201014
+ERROR - The operation was not stored in the content of an Enumeration : Orientation
+ERROR - The operation was not stored in the content of an Enumeration : Orientation
+ERROR - The operation was not stored in the content of an Enumeration : Orientation
+ERROR - 19:57:27: BSPTreeNode cannot be found by org.eclipse.umlgen.reverse.java_1.0.0.201511201014
+ERROR - 19:57:28: BSPTreeNode cannot be found by org.eclipse.umlgen.reverse.java_1.0.0.201511201014
+ERROR - 19:57:28: BSPTreeNode cannot be found by org.eclipse.umlgen.reverse.java_1.0.0.201511201014
+ERROR - 19:57:28: BSPTreeNode cannot be found by org.eclipse.umlgen.reverse.java_1.0.0.201511201014
+WARNING - 19:57:30: Second pass : generating package usages
+WARNING - 19:57:30: Saving .uml resource: 20190513_195730
+WARNING - 19:57:30: Finished saving .uml resource: 20190513_195730
